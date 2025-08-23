@@ -1,6 +1,7 @@
 package com.myapp.belajar_spring_restful_api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +59,29 @@ class UserControllerTest {
                             });
 
                     assertEquals("OK", response.getData());
+                });
+    }
+
+    @Test
+    void testRegisterBadRequest() throws Exception {
+        RegisterUserRequest request = new RegisterUserRequest();
+        request.setUsername("");
+        request.setPassword("");
+        request.setName("");
+
+        mockMvc.perform(
+                post("/api/users")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpectAll(
+                        status().isBadRequest())
+                .andDo(result -> {
+                    ApiResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(),
+                            new TypeReference<>() {
+                            });
+
+                    assertNotNull(response.getErrors());
                 });
     }
 }
