@@ -3,11 +3,12 @@ package com.myapp.belajar_spring_restful_api.service;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.myapp.belajar_spring_restful_api.entity.User;
-import com.myapp.belajar_spring_restful_api.exception.ApiException;
 import com.myapp.belajar_spring_restful_api.model.RegisterUserRequest;
 import com.myapp.belajar_spring_restful_api.repository.UserRepository;
 import com.myapp.belajar_spring_restful_api.security.BCrypt;
@@ -25,14 +26,14 @@ public class UserService {
     private Validator validator;
 
     @Transactional
-    public void register(RegisterUserRequest request){
+    public void register(RegisterUserRequest request) {
         Set<ConstraintViolation<RegisterUserRequest>> constraintViolations = validator.validate(request);
-        if(constraintViolations.size() != 0){
+        if (constraintViolations.size() != 0) {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        if(userRepository.existsById(request.getUsername())){
-            throw new ApiException("Username already registered");
+        if (userRepository.existsById(request.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already registered");
         }
 
         User user = new User();
