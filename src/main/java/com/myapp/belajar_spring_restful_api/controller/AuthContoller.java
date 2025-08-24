@@ -8,12 +8,14 @@ import com.myapp.belajar_spring_restful_api.model.LoginUserRequest;
 import com.myapp.belajar_spring_restful_api.model.TokenResponse;
 import com.myapp.belajar_spring_restful_api.service.AuthService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 public class AuthContoller {
 
+    @Autowired
     private AuthService authService;
 
     @PostMapping(path = "/api/auth/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
