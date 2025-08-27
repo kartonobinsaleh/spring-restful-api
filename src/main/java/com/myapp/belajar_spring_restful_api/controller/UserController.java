@@ -5,11 +5,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myapp.belajar_spring_restful_api.entity.User;
 import com.myapp.belajar_spring_restful_api.model.ApiResponse;
 import com.myapp.belajar_spring_restful_api.model.RegisterUserRequest;
+import com.myapp.belajar_spring_restful_api.model.UserResponse;
 import com.myapp.belajar_spring_restful_api.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 public class UserController {
@@ -18,13 +20,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(path = "/api/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    
-    public ApiResponse<String> register(@RequestBody RegisterUserRequest request){
+
+    public ApiResponse<String> register(@RequestBody RegisterUserRequest request) {
         userService.register(request);
 
         return ApiResponse.<String>builder().data("OK").build();
     }
 
+    @GetMapping(path = "/api/users/current", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiResponse<UserResponse> get(User user) {
+        UserResponse userResponse = userService.get(user);
 
-    
+        return ApiResponse.<UserResponse>builder().data(userResponse).build();
+    }
+
 }

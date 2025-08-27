@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.myapp.belajar_spring_restful_api.entity.User;
 import com.myapp.belajar_spring_restful_api.model.RegisterUserRequest;
+import com.myapp.belajar_spring_restful_api.model.UserResponse;
 import com.myapp.belajar_spring_restful_api.repository.UserRepository;
 import com.myapp.belajar_spring_restful_api.security.BCrypt;
 
@@ -35,5 +36,9 @@ public class UserService {
 
         userRepository.save(user);
 
+    }
+
+    public UserResponse get(User user) {
+        return UserResponse.builder().username(user.getUsername()).name(user.getName()).build();
     }
 }
